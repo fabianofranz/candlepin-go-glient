@@ -44,54 +44,7 @@ type APIClient struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// API Services
-
-	ActivationKeysApi *ActivationKeysApiService
-
-	AdminApi *AdminApiService
-
-	AtomApi *AtomApiService
-
-	CdnApi *CdnApiService
-
-	ConsumersApi *ConsumersApiService
-
-	ConsumertypesApi *ConsumertypesApiService
-
-	ContentApi *ContentApiService
-
-	CrlApi *CrlApiService
-
-	DeletedConsumersApi *DeletedConsumersApiService
-
-	DistributorVersionsApi *DistributorVersionsApiService
-
-	EntitlementsApi *EntitlementsApiService
-
-	EnvironmentsApi *EnvironmentsApiService
-
-	EventsApi *EventsApiService
-
-	HypervisorsApi *HypervisorsApiService
-
-	JobsApi *JobsApiService
-
 	OwnersApi *OwnersApiService
-
-	PoolsApi *PoolsApiService
-
-	ProductsApi *ProductsApiService
-
-	RolesApi *RolesApiService
-
-	RulesApi *RulesApiService
-
-	SerialsApi *SerialsApiService
-
-	StatusApi *StatusApiService
-
-	SubscriptionsApi *SubscriptionsApiService
-
-	UsersApi *UsersApiService
 }
 
 type service struct {
@@ -110,30 +63,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.ActivationKeysApi = (*ActivationKeysApiService)(&c.common)
-	c.AdminApi = (*AdminApiService)(&c.common)
-	c.AtomApi = (*AtomApiService)(&c.common)
-	c.CdnApi = (*CdnApiService)(&c.common)
-	c.ConsumersApi = (*ConsumersApiService)(&c.common)
-	c.ConsumertypesApi = (*ConsumertypesApiService)(&c.common)
-	c.ContentApi = (*ContentApiService)(&c.common)
-	c.CrlApi = (*CrlApiService)(&c.common)
-	c.DeletedConsumersApi = (*DeletedConsumersApiService)(&c.common)
-	c.DistributorVersionsApi = (*DistributorVersionsApiService)(&c.common)
-	c.EntitlementsApi = (*EntitlementsApiService)(&c.common)
-	c.EnvironmentsApi = (*EnvironmentsApiService)(&c.common)
-	c.EventsApi = (*EventsApiService)(&c.common)
-	c.HypervisorsApi = (*HypervisorsApiService)(&c.common)
-	c.JobsApi = (*JobsApiService)(&c.common)
 	c.OwnersApi = (*OwnersApiService)(&c.common)
-	c.PoolsApi = (*PoolsApiService)(&c.common)
-	c.ProductsApi = (*ProductsApiService)(&c.common)
-	c.RolesApi = (*RolesApiService)(&c.common)
-	c.RulesApi = (*RulesApiService)(&c.common)
-	c.SerialsApi = (*SerialsApiService)(&c.common)
-	c.StatusApi = (*StatusApiService)(&c.common)
-	c.SubscriptionsApi = (*SubscriptionsApiService)(&c.common)
-	c.UsersApi = (*UsersApiService)(&c.common)
 
 	return c
 }
@@ -382,17 +312,17 @@ func (c *APIClient) prepareRequest(
 }
 
 func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err error) {
-		if strings.Contains(contentType, "application/xml") {
-			if err = xml.Unmarshal(b, v); err != nil {
-				return err
-			}
-			return nil
-		} else if strings.Contains(contentType, "application/json") {
-			if err = json.Unmarshal(b, v); err != nil {
-				return err
-			}
-			return nil
+	if strings.Contains(contentType, "application/xml") {
+		if err = xml.Unmarshal(b, v); err != nil {
+			return err
 		}
+		return nil
+	} else if strings.Contains(contentType, "application/json") {
+		if err = json.Unmarshal(b, v); err != nil {
+			return err
+		}
+		return nil
+	}
 	return errors.New("undefined response type")
 }
 
